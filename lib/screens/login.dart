@@ -2,7 +2,7 @@ import 'package:aquest/screens/functions.dart';
 import 'package:aquest/screens/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:aquest/classes/classes.dart';
+import 'package:aquest/classes/firebase_user.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({Key? key}) : super(key: key);

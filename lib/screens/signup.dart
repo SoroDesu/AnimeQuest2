@@ -1,3 +1,4 @@
+import 'package:aquest/classes/firebase_user.dart';
 import 'package:aquest/screens/functions.dart';
 import 'package:aquest/screens/login.dart';
 import 'package:aquest/screens/verify.dart';
@@ -107,7 +108,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                     content: Text("Processing Data...")));
-                            SignUpFun(_username, _email, _password);
+
+                            FirebaseUser().signUp(username: _username, email: _email, password: _password);
+
                             Future.delayed(Duration(seconds: 4), () {
                               Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(

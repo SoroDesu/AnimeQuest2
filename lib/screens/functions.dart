@@ -7,33 +7,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-Future<void> SignUpFun(String username, String email, String password) async {
-  final auth = FirebaseAuth.instance;
-
-  String avatarUrl = getDefaultAvatar();
-
-  try {
-    UserCredential result = await auth.createUserWithEmailAndPassword(
-        email: email, password: password);
-    User? user = result.user;
-    user?.updateDisplayName(username);
-
-    final ref = FirebaseDatabase.instance.ref("usernames").push();
-
-    user?.updateDisplayName(ref.key);
-
-    await ref.set({
-      "username": username,
-      "level": 1,
-      "title": "No Title",
-      "avatar": avatarUrl,
-      "completed" : ""
-    });
-  } catch (e) {
-    print(e.toString());
-  }
-}
-
 Future sendVerificationEmail(BuildContext context) async {
   final user = FirebaseAuth.instance.currentUser!;
 
@@ -54,76 +27,6 @@ void switchToSignUpPage(BuildContext context) {
 void switchToAddQuestPage(BuildContext context) {
   Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => const AddQuestScreen()));
-}
-
-Future getUserName() async {
-  final auth = FirebaseAuth.instance;
-
-  String username = '';
-  username = auth.currentUser!.displayName.toString();
-
-  final ref = FirebaseDatabase.instance.ref();
-  final snapshot = await ref.child('usernames/$username/username').get();
-
-  String name = snapshot.value.toString();
-
-  if (name != null) {
-    return name;
-  } else {
-    return "Error: 727";
-  }
-}
-
-Future<String> getUserTitle() async {
-  final auth = FirebaseAuth.instance;
-
-  String username = auth.currentUser!.displayName.toString();
-
-  final ref = FirebaseDatabase.instance.ref();
-  final snapshot = await ref.child('usernames/$username/title').get();
-
-  String userTitle = snapshot.value.toString();
-
-  if (userTitle != null) {
-    return userTitle;
-  } else {
-    return "Error: 727";
-  }
-}
-
-Future<String> getUserLevel() async {
-  final auth = FirebaseAuth.instance;
-
-  String username = '';
-  username = auth.currentUser!.displayName.toString();
-
-  final ref = FirebaseDatabase.instance.ref();
-  final snapshot = await ref.child('usernames/$username/level').get();
-
-  String userLevel = snapshot.value.toString();
-
-  if (userLevel != null) {
-    return userLevel;
-  } else {
-    return "Error: 727";
-  }
-}
-
-Future<String> getUserAvatar() async {
-  final auth = FirebaseAuth.instance;
-  final datRef = FirebaseDatabase.instance.ref();
-
-  String username = auth.currentUser!.displayName.toString();
-  final snapshot = await datRef.child('usernames/$username/avatar').get();
-  final avatarName = snapshot.value;
-  final newUrl = "https://firebasestorage.googleapis.com/v0/b/animequest-94c00.appspot.com/o/avatars%2F$avatarName?alt=media&token=46f7f6f8-bd5d-44a6-941f-d3fd78624303";
-
-  return newUrl;
-}
-
-String getDefaultAvatar() {
-  var url = "https://firebasestorage.googleapis.com/v0/b/animequest-94c00.appspot.com/o/avatars%2Fdefault.jfif?alt=media&token=46f7f6f8-bd5d-44a6-941f-d3fd78624303";
-  return url;
 }
 
 Future uploadNewAvatar() async {

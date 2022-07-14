@@ -1,6 +1,5 @@
 import 'package:aquest/screens/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:aquest/screens/functions.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 
@@ -32,6 +31,7 @@ class FirebaseUser {
       avatar = 'https://firebasestorage.googleapis.com/v0/b/animequest-94c00.appspot.com/o/avatars%2F$_avatarUrl?alt=media&token=46f7f6f8-bd5d-44a6-941f-d3fd78624303';
 
       return HomeApp();
+
     } on FirebaseAuthException catch (e) {
         print(e);
     } catch (e) {
@@ -39,10 +39,10 @@ class FirebaseUser {
     }
   }
 
-  Future SignUp({required String username, required String email,required String password}) async {
+  Future signUp({required String username, required String email,required String password}) async {
     final auth = FirebaseAuth.instance;
 
-    String avatarUrl = getDefaultAvatar();
+    String avatarUrl = "https://firebasestorage.googleapis.com/v0/b/animequest-94c00.appspot.com/o/avatars%2Fdefault.jfif?alt=media&token=46f7f6f8-bd5d-44a6-941f-d3fd78624303";
 
     try {
       UserCredential result = await auth.createUserWithEmailAndPassword(
@@ -67,11 +67,4 @@ class FirebaseUser {
       print(e);
     }
   }
-}
-
-class Quest {
-  static String questName = 'default-quest-name';
-  static String questDescription = 'default-quest-description';
-  static String questAnswer = 'default-quest-answer';
-  static String questRarity = 'default-quest-rarity';
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:aquest/screens/functions.dart';
 import 'package:aquest/screens/login.dart';
-import 'package:aquest/classes/classes.dart';
+import 'package:aquest/classes/firebase_user.dart';
 
 class CharacterSheet extends StatefulWidget {
   const CharacterSheet({Key? key}) : super(key: key);
