@@ -1,4 +1,6 @@
+import 'package:aquest/screens/error_page.dart';
 import 'package:flutter/material.dart';
+import 'package:aquest/screens/functions.dart';
 
 class EventList extends StatefulWidget {
   const EventList({Key? key}) : super(key: key);
@@ -16,9 +18,10 @@ class _EventListState extends State<EventList> {
         elevation: 0,
       ),
       body: Center(
-        child: ElevatedButton(onPressed: () {
-
-        }, child: Text('data'))
+        child: ElevatedButton(
+          onPressed: () {
+          },
+          child: Text('data'))
       ),
     );
   }

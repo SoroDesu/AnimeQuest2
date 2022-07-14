@@ -9,7 +9,6 @@ import 'package:image_picker/image_picker.dart';
 
 Future sendVerificationEmail(BuildContext context) async {
   final user = FirebaseAuth.instance.currentUser!;
-
   try {
     await user.sendEmailVerification();
   } catch (e) {
@@ -27,36 +26,6 @@ void switchToSignUpPage(BuildContext context) {
 void switchToAddQuestPage(BuildContext context) {
   Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => const AddQuestScreen()));
-}
-
-Future uploadNewAvatar() async {
-  final auth = FirebaseAuth.instance;
-  final storageRef = FirebaseStorage.instance.ref();
-  final datRef = FirebaseDatabase.instance.ref();
-
-  String username = auth.currentUser!.displayName.toString();
-
-  final avatarStorageRef = storageRef.child('avatars/$username-avatar');
-
-  final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-
-  if (image == null) {
-    return "no image selected";
-  }
-
-  File file = File(image.path);
-
-  try {
-    await avatarStorageRef.putFile(file);
-
-    final snapshot = await datRef.child('usernames/$username');
-    await snapshot.update({
-      'avatar' : '$username-avatar',
-    });
-
-  } on FirebaseException catch (e) {
-    return "oh noes, error in image";
-  }
 }
 
 Future<bool> isUserAdmin() async{
@@ -101,4 +70,15 @@ Future addNewQuest(String questName, String questDescription, String questAnswer
   }
 
 
+}
+
+prntPico() async {
+final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+final uid = await _firebaseAuth.currentUser!.displayName.toString();
+final datRef = FirebaseDatabase.instance.ref('usernames/$uid');
+DatabaseEvent event = await datRef.once();
+
+var userInfo = event.snapshot.value;
+
+print(userInfo);
 }

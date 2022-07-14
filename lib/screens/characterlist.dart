@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:aquest/screens/functions.dart';
 import 'package:aquest/screens/login.dart';
 import 'package:aquest/classes/firebase_user.dart';
 
@@ -13,6 +12,22 @@ class CharacterSheet extends StatefulWidget {
 
 class _CharacterSheetState extends State<CharacterSheet> {
   final auth = FirebaseAuth.instance;
+  static String _username = '';
+  static String _level = '';
+  static String _avatar = '';
+  static String _title = '';
+
+
+  updateUserInfo () {
+    FirebaseUser().updateInfo();
+    setState(() {
+      // TODO: implement setState
+      _username = FirebaseUser.username;
+      _level = FirebaseUser.level;
+      _avatar = FirebaseUser.avatar;
+      _title = FirebaseUser.title;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +60,14 @@ class _CharacterSheetState extends State<CharacterSheet> {
                   children: [
                     CircleAvatar(
                       radius: 100.0,
-                      backgroundImage: NetworkImage(FirebaseUser.avatar),
+                      backgroundImage: NetworkImage(_avatar),
                     ),
                     Positioned(
                       left: 140,
                       child: FloatingActionButton(
                         child: Icon(Icons.edit),
                         onPressed: () {
-                          uploadNewAvatar();
+                          FirebaseUser().uploadNewAvatar();
                         },
                       ),
                     ),
@@ -92,7 +107,7 @@ class _CharacterSheetState extends State<CharacterSheet> {
                           ),
                         ),
                         Text(
-                          FirebaseUser.title,
+                          _title,
                           style: const TextStyle(
                             fontSize: 20.0,
                           ),

@@ -1,5 +1,4 @@
 import 'package:aquest/classes/firebase_user.dart';
-import 'package:aquest/screens/functions.dart';
 import 'package:aquest/screens/login.dart';
 import 'package:aquest/screens/verify.dart';
 import 'package:flutter/material.dart';
@@ -103,30 +102,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     SizedBox(height: 30.0),
                     TextButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text("Processing Data...")));
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Processing Data...")
+                            )
+                          );
 
-                            FirebaseUser().signUp(username: _username, email: _email, password: _password);
-
-                            Future.delayed(Duration(seconds: 4), () {
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const VerifyPage()));
-                            });
-                          }
-                        },
-                        child: Text("Sign Up")),
+                          FirebaseUser().signUp(context: context, newusername: _username, newemail: _email, newpassword: _password);
+                        }
+                      },
+                      child: Text("Sign Up")),
                     TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) => const LogInScreen()));
-                        },
-                        child: Text("Already have an account? Sign in"))
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) => const LogInScreen()));
+                      },
+                      child: Text("Already have an account? Sign in"))
                   ],
                 ),
               ),
