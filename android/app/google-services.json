@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "775372638151",
+    "firebase_url": "https://animequest-94c00-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "animequest-94c00",
+    "storage_bucket": "animequest-94c00.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:775372638151:android:5bd79472afd9238a1d7be2",
+        "android_client_info": {
+          "package_name": "com.anime.quest.aquest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "775372638151-h663cvuvrefnoimdg6f5ge6p9e3g2gct.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGd6cJrsCfJVXl1ezMwnPVEN1azmR4HPI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "775372638151-h663cvuvrefnoimdg6f5ge6p9e3g2gct.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "775372638151-ad1iqe624r9acli32r9h1jd3soughisi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.anime.quest.aquest"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
