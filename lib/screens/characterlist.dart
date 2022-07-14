@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:aquest/screens/login.dart';
@@ -17,6 +19,20 @@ class _CharacterSheetState extends State<CharacterSheet> {
   static String _avatar = '';
   static String _title = '';
 
+  Timer? timer;
+
+  @override
+  void initState() {
+    updateUserInfo();
+    timer = Timer.periodic(Duration(seconds: 1), (Timer t) => updateUserInfo());
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
 
   updateUserInfo () {
     FirebaseUser().updateInfo();
@@ -68,13 +84,14 @@ class _CharacterSheetState extends State<CharacterSheet> {
                         child: Icon(Icons.edit),
                         onPressed: () {
                           FirebaseUser().uploadNewAvatar();
+                          updateUserInfo();
                         },
                       ),
                     ),
                   ],
                 ),
                 Text(
-                  FirebaseUser.username,
+                  _username,
                   style: const TextStyle(fontSize: 30.0),
                 ),
                 Row(
@@ -90,7 +107,7 @@ class _CharacterSheetState extends State<CharacterSheet> {
                           ),
                         ),
                         Text(
-                          FirebaseUser.level,
+                          _level,
                           style: const TextStyle(
                             fontSize: 20.0,
                           ),

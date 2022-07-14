@@ -1,9 +1,9 @@
 import 'dart:core';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
 import 'package:aquest/screens/functions.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:aquest/classes/firebase_user.dart';
 
 class QuestList extends StatefulWidget {
   const QuestList({Key? key}) : super(key: key);
@@ -79,7 +79,7 @@ Future getQuestList(BuildContext context) async {
 
   final panelColor = Theme.of(context).colorScheme.surface;
   final datRef = FirebaseDatabase.instance.ref();
-  final username = FirebaseAuth.instance.currentUser!.displayName;
+  final uid = FirebaseUser.uid;
 
   await datRef.child('quests').once().then((snapshot) async{
     for (var element in snapshot.snapshot.children) {
@@ -88,7 +88,7 @@ Future getQuestList(BuildContext context) async {
       questName = element.child('name').value.toString();
       questDescription = element.child('description').value.toString();
 
-      final compDatRef = FirebaseDatabase.instance.ref('usernames/$username/completed');
+      final compDatRef = FirebaseDatabase.instance.ref('usernames/$uid/completed');
 
       await compDatRef.child('$questID').once().then((snapshot) {
         if (snapshot.snapshot.exists) {
@@ -221,15 +221,15 @@ Future<void> showQuestCompleteDialog(BuildContext context, String? questID, Stri
 }
 
 Future<bool?> completeQuest(String? questID) async {
-  final username = FirebaseAuth.instance.currentUser!.displayName;
-  final datRef = FirebaseDatabase.instance.ref('usernames/$username');
+  final uid = FirebaseUser.uid;
+  final datRef = FirebaseDatabase.instance.ref('usernames/$uid');
   int currentLevel = 0;
 
   await datRef.child('completed').update({
     questID.toString() : "",
   });
 
-  final compDatRef = FirebaseDatabase.instance.ref('usernames/$username');
+  final compDatRef = FirebaseDatabase.instance.ref('usernames/$uid');
   await compDatRef.child('level').once().then((snapshot) {
     currentLevel = int.parse(snapshot.snapshot.value.toString());
     currentLevel++;

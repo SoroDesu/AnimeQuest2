@@ -17,6 +17,7 @@ class _LogInScreenState extends State<LogInScreen> {
   String _email = '', _password = '';
   final auth = FirebaseAuth.instance;
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

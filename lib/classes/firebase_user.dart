@@ -125,8 +125,9 @@ class FirebaseUser {
       user!.updatePhotoURL(avatarUrl);
       FirebaseUser.avatar = '$uid-avatar';
 
+
     } on FirebaseException catch (e) {
-      return "oh noes, error in image";
+      return e;
     }
   }
 }
