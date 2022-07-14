@@ -20,109 +20,109 @@ class _LogInScreenState extends State<LogInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Sign In"),
-        ),
-        body: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 250.0,
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextFormField(
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        hintText: "Email Address",
+      appBar: AppBar(
+        title: Text("Sign In"),
+      ),
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 250.0,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextFormField(
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
-                      validator: (String? value) {
-                        if (value!.isEmpty) {
-                          return "This field is required";
-                        }
-                        if (!value.contains("@")) {
-                          return "This email is not valid";
-                        }
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _email = value.trim();
-                        });
-                      },
+                      hintText: "Email Address",
                     ),
-                    const SizedBox(height: 12.0),
-                    TextFormField(
-                      obscureText: true,
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        hintText: "Password",
+                    validator: (String? value) {
+                      if (value!.isEmpty) {
+                        return "This field is required";
+                      }
+                      if (!value.contains("@")) {
+                        return "This email is not valid";
+                      }
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        _email = value.trim();
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 12.0),
+                  TextFormField(
+                    obscureText: true,
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
-                      validator: (String? value) {
-                        if (value!.isEmpty) {
-                          return "This field is required";
-                        }
-                        if (value.length < 6) {
-                          return "Password has to be 6 characters or more";
-                        }
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _password = value.trim();
-                        });
-                      },
+                      hintText: "Password",
                     ),
-                    SizedBox(height: 20.0),
-                    TextButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
+                    validator: (String? value) {
+                      if (value!.isEmpty) {
+                        return "This field is required";
+                      }
+                      if (value.length < 6) {
+                        return "Password has to be 6 characters or more";
+                      }
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        _password = value.trim();
+                      });
+                    },
+                  ),
+                  SizedBox(height: 20.0),
+                  TextButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text("Processing Data..."),
+                            duration: Duration(seconds: 2),
+                          ));
+
+                          FirebaseUser().signIn(email: _email, password: _password);
+
+                          if (auth.currentUser != null) {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
-                              content: Text("Processing Data..."),
+                              content: Text("Signing in..."),
                               duration: Duration(seconds: 2),
                             ));
-
-                            FirebaseUser user = new FirebaseUser();
-
-                            if (auth.currentUser != null) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                content: Text("Signing in..."),
-                                duration: Duration(seconds: 2),
-                              ));
-                              Future.delayed(Duration(seconds: 4), () {
-                                Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                        builder: (context) => const HomeApp()));
-                              });
-                            } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                content: Text("Incorrect email or password"),
-                                duration: Duration(seconds: 1),
-                              ));
-                            }
+                            Future.delayed(Duration(seconds: 4), () {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomeApp()));
+                            });
+                          } else {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text("Incorrect email or password"),
+                              duration: Duration(seconds: 1),
+                            ));
                           }
-                        },
-                        child: Text("Sign In")),
-                    TextButton(
-                      onPressed: () {
-                        switchToSignUpPage(context);
+                        }
                       },
-                      child: Text("Don't have an account? Sign up"),
-                    ),
-                  ],
-                ),
+                      child: Text("Sign In")),
+                  TextButton(
+                    onPressed: () {
+                      switchToSignUpPage(context);
+                    },
+                    child: Text("Don't have an account? Sign up"),
+                  ),
+                ],
               ),
             ),
-          ],
-        ));
+          ),
+        ],
+      ));
   }
 }

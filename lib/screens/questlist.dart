@@ -1,12 +1,9 @@
-import 'dart:convert';
 import 'dart:core';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
 import 'package:aquest/screens/functions.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:aquest/screens/addquest.dart';
 
 class QuestList extends StatefulWidget {
   const QuestList({Key? key}) : super(key: key);
@@ -93,15 +90,6 @@ Future getQuestList(BuildContext context) async {
 
       final compDatRef = FirebaseDatabase.instance.ref('usernames/$username/completed');
 
-      // await compDatRef.child('completed').once().then((snapshot) {
-      //   for (var elements in snapshot.snapshot.children) {
-      //     if (elements.key.toString() == element.key.toString()) {
-      //       didComplete = true;
-      //     } else {
-      //       didComplete = false;
-      //     }
-      //   }
-      // });
       await compDatRef.child('$questID').once().then((snapshot) {
         if (snapshot.snapshot.exists) {
           didComplete = true;
@@ -165,11 +153,14 @@ Future getQuestList(BuildContext context) async {
 }
 
 Future<void> showAlertDialog(BuildContext context, String text) async {
-  return await showDialog(context: context, builder: (context) {
-    return StatefulBuilder(builder: (context, setState) {
-      return AlertDialog(
-        content: Text(text),
-      );
+  return await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(builder: (context, setState) {
+          return AlertDialog(
+            content: Text(text),
+          );
     });
   });
 }
@@ -202,7 +193,7 @@ Future<void> showQuestCompleteDialog(BuildContext context, String? questID, Stri
               onPressed: () {
                 if (userAnswer == '') {
                   showAlertDialog(context, 'You need to enter something...');
-                  Future.delayed(Duration(seconds: 1), () {
+                  Future.delayed(Duration(seconds: 5), () {
                     Navigator.of(context).pop();
                   });
                 } else if (userAnswer.toLowerCase() == questAnswer.toLowerCase()) {

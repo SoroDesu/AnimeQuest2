@@ -15,8 +15,10 @@ class _EventListState extends State<EventList> {
         title: const Text("Events"),
         elevation: 0,
       ),
-      body: const Center(
-        child: Text("Coming soon!"),
+      body: Center(
+        child: ElevatedButton(onPressed: () {
+
+        }, child: Text('data'))
       ),
     );
   }

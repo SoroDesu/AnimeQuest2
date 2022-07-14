@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:aquest/screens/functions.dart';
 import 'package:aquest/screens/login.dart';
+import 'package:aquest/classes/classes.dart';
 
 class CharacterSheet extends StatefulWidget {
   const CharacterSheet({Key? key}) : super(key: key);
@@ -13,57 +14,8 @@ class CharacterSheet extends StatefulWidget {
 class _CharacterSheetState extends State<CharacterSheet> {
   final auth = FirebaseAuth.instance;
 
-  String _username = '';
-  String _userLevel = '';
-  String _userTitle = '';
-  String _userAvatar = '';
-
-  _updateUsername() {
-    getUserName().then((value) {
-      if (mounted) {
-        setState(() {
-          _username = value;
-        });
-      }
-    });
-  }
-
-  _updateTitle() {
-    getUserTitle().then((value) {
-      if (mounted) {
-        setState(() {
-          _userTitle = value;
-        });
-      }
-    });
-  }
-
-  _updateUserLevel() {
-    getUserLevel().then((value) {
-      if (mounted) {
-        setState(() {
-          _userLevel = value;
-        });
-      }
-    });
-  }
-
-  _updateUserAvatar() {
-    getUserAvatar().then((value) {
-      if (mounted) {
-        setState((){
-          _userAvatar = value;
-        });
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    _updateUsername();
-    _updateUserLevel();
-    _updateTitle();
-    _updateUserAvatar();
 
     return Scaffold(
         appBar: AppBar(
@@ -93,7 +45,7 @@ class _CharacterSheetState extends State<CharacterSheet> {
                   children: [
                     CircleAvatar(
                       radius: 100.0,
-                      backgroundImage: NetworkImage(_userAvatar),
+                      backgroundImage: NetworkImage(FirebaseUser.avatar),
                     ),
                     Positioned(
                       left: 140,
@@ -107,7 +59,7 @@ class _CharacterSheetState extends State<CharacterSheet> {
                   ],
                 ),
                 Text(
-                  _username,
+                  FirebaseUser.username,
                   style: const TextStyle(fontSize: 30.0),
                 ),
                 Row(
@@ -123,7 +75,7 @@ class _CharacterSheetState extends State<CharacterSheet> {
                           ),
                         ),
                         Text(
-                          _userLevel,
+                          FirebaseUser.level,
                           style: const TextStyle(
                             fontSize: 20.0,
                           ),
@@ -140,7 +92,7 @@ class _CharacterSheetState extends State<CharacterSheet> {
                           ),
                         ),
                         Text(
-                          _userTitle,
+                          FirebaseUser.title,
                           style: const TextStyle(
                             fontSize: 20.0,
                           ),

@@ -72,8 +72,9 @@ class _AddQuestScreenState extends State<AddQuestScreen> {
                   ),
                   const SizedBox(height: 12.0),
                   ElevatedButton(
-                    onPressed: () {
-                      addNewQuest(_questName, _questDescription, _questAnswer);
+                    onPressed: () async {
+                      await addNewQuest(_questName, _questDescription, _questAnswer);
+                      Navigator.of(context).pop();
                     },
                     child: Icon(Icons.add))
                 ],

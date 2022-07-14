@@ -1,46 +1,77 @@
-import 'package:aquest/screens/app.dart';
 import 'package:aquest/screens/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:aquest/screens/functions.dart';
+import 'package:firebase_database/firebase_database.dart';
 
-class AuthenticationService {
-  final FirebaseAuth _firebaseAuth;
-
-  AuthenticationService(this._firebaseAuth);
-
-  Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
-
-  Future<String> signIn({required String email, required password}) async {
-    try {
-      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
-      return 'Signed in';
-    } on FirebaseAuthException catch (e) {
-        return e.message.toString();
-    }
-
-  }
-
-  Future<String> signUp({required String email,required String password}) async {
-    try {
-      await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-      return 'Signed up';
-    } on FirebaseAuthException catch (e) {
-      return e.message.toString();
-    }
-
-  }
-}
 
 class FirebaseUser {
+  static String username = 'default-user';
+  static String level = '0';
+  static String title = 'no-title';
+  static String avatar = '';
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final datRef = FirebaseDatabase.instance.ref();
 
   Future signIn({required String email, required String password}) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      final uid = await _firebaseAuth.currentUser!.displayName.toString();
+
+      final _username = await datRef.child('usernames/$uid/username').get();
+      username = _username.value.toString();
+
+      final _level = await datRef.child('usernames/$uid/level').get();
+      level = _level.value.toString();
+
+      final _title = await datRef.child('usernames/$uid/title').get();
+      title = _title.value.toString();
+
+      final _avatar = await datRef.child('usernames/$uid/avatar').get();
+      final _avatarUrl = _avatar.value.toString();
+      avatar = 'https://firebasestorage.googleapis.com/v0/b/animequest-94c00.appspot.com/o/avatars%2F$_avatarUrl?alt=media&token=46f7f6f8-bd5d-44a6-941f-d3fd78624303';
+
       return HomeApp();
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
         print(e);
+    } catch (e) {
+      print(e);
     }
   }
+
+  Future SignUp({required String username, required String email,required String password}) async {
+    final auth = FirebaseAuth.instance;
+
+    String avatarUrl = getDefaultAvatar();
+
+    try {
+      UserCredential result = await auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      User? user = result.user;
+      user?.updateDisplayName(username);
+
+      final ref = FirebaseDatabase.instance.ref("usernames").push();
+
+      user?.updateDisplayName(ref.key);
+
+      await ref.set({
+        "username": username,
+        "level": 1,
+        "title": "No Title",
+        "avatar": avatarUrl,
+        "completed" : ""
+      });
+    } on FirebaseAuthException catch (e) {
+      print(e.toString());
+    } catch (e) {
+      print(e);
+    }
+  }
+}
+
+class Quest {
+  static String questName = 'default-quest-name';
+  static String questDescription = 'default-quest-description';
+  static String questAnswer = 'default-quest-answer';
+  static String questRarity = 'default-quest-rarity';
 }
